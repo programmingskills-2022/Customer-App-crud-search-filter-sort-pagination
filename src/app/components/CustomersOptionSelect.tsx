@@ -128,7 +128,7 @@ export default function CustomersOptionSelect({
           changeValue={changeValue}
         />
       </div>
-      <div className="w-full flex gap-8 md:gap-4 px-2 justify-center py-4 md:px-4">
+      <div className="w-full flex gap-8 md:gap-4 px-2 justify-center md:justify-start py-4 md:px-4">
         <Checkbox
           name="warranty"
           labelValue="Warranty"
