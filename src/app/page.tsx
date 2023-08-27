@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <main className="w-full font-roboto flex-col justify-center items-left">
       <h1
-        className={`w-full font-roboto_mono font-bold text-slate-700 text-4xl p-4 bg-slate-100`}
+        className={`w-full font-roboto_mono font-bold text-slate-700 text-2xl md:text-4xl p-4 bg-slate-100`}
       >
         Customer Lists
       </h1>

@@ -20,10 +20,10 @@ export default function Table({
   };
 
   return (
-    <div className="px-4 pb-8">
+    <div className="px-2 md:px-4 pb-8">
       <table className="w-full table-auto text-left">
         <thead className="bg-slate-400 text-slate-800">
-          <tr className="text-xl">
+          <tr className="text-xs md:text-2xl">
             {colLabels.map((colLabel, i) => {
               return (
                 <th
@@ -41,7 +41,7 @@ export default function Table({
             return (
               <tr
                 key={i}
-                className="bg-slate-100 border border-slate-300 odd:bg-slate-100 even:bg-slate-200"
+                className="text-xs md:text-lg bg-slate-100 border border-slate-300 odd:bg-slate-100 even:bg-slate-200"
               >
                 {Object.keys(obj).map((key) => {
                   const isExists = findCalculatedField(key);
@@ -60,7 +60,7 @@ export default function Table({
             );
           })}
           {summeryVisible && count > 0 && (
-            <tr className="text-xl bg-slate-400">
+            <tr className="text-sm font-bold md:text-xl bg-slate-400">
               <td
                 colSpan={colLabels.length}
                 className={`md:px-4 px-2 py-2 rounded-bl-xl rounded-br-xl`}

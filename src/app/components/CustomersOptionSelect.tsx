@@ -105,7 +105,7 @@ export default function CustomersOptionSelect({
 
   return (
     <div className="w-full flex items-center flex-col lg:flex-row lg:justify-between ">
-      <div className="w-full flex gap-4 md:gap-6 flex-col md:flex-row p-4">
+      <div className="w-full flex gap-4 md:gap-6 flex-col md:flex-row px-2 md:px-4">
         <Input
           classname="outline-none bg-slate-200 text-slate-700 px-4 py-2 md:w-48 w-full rounded-xl"
           name="serial_number"
@@ -128,7 +128,7 @@ export default function CustomersOptionSelect({
           changeValue={changeValue}
         />
       </div>
-      <div className="w-full flex gap-4 flex-col md:flex-row p-4">
+      <div className="w-full flex gap-8 md:gap-4 px-2 justify-center py-4 md:px-4">
         <Checkbox
           name="warranty"
           labelValue="Warranty"
@@ -142,7 +142,7 @@ export default function CustomersOptionSelect({
           changeCheckedValue={changeValue}
         />
       </div>
-      <div className="w-full flex flex-col px-4 md:w-36 items-end">
+      <div className="w-full flex flex-col px-2 md:px-4 md:w-36 items-end">
         <Button
           classname="w-full py-2 px-4 bg-slate-700 opacity-90 text-white rounded-xl my-6 md:w-36 hover:opacity-95"
           onClick={resetFilters}
