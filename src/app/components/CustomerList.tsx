@@ -13,13 +13,33 @@ export default function CustomerList({ customers }: Props) {
     [...customers]
   );
 
-  const customerColLabels: string[] = [
-    "Id",
-    "Customer",
-    "Asset Type",
-    "Serial Number",
-    "Service Contract",
-    "Warranty",
+  const customerColLabels: colLabel[] = [
+    { colName: "id", label: "Id", isSorted: false, sortable: true },
+    { colName: "customer", label: "Customer", isSorted: false, sortable: true },
+    {
+      colName: "assetType",
+      label: "Asset Type",
+      isSorted: false,
+      sortable: false,
+    },
+    {
+      colName: "serial_number",
+      label: "Serial Number",
+      isSorted: false,
+      sortable: false,
+    },
+    {
+      colName: "service-contract",
+      label: "Service Contract",
+      isSorted: false,
+      sortable: false,
+    },
+    {
+      colName: "warranty",
+      label: "Warranty",
+      isSorted: false,
+      sortable: false,
+    },
   ];
 
   const calculatedFields: CalculatedField[] = [

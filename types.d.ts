@@ -22,6 +22,13 @@ type CalculatedField = {
   calcFunc: (fieldVal: boolean) => JSX.Element;
 };
 
+type colLabel = {
+  colName: string;
+  label: string;
+  isSorted: boolean;
+  sortable: boolean;
+};
+
 type CustomerMetadata = {
   id: string;
   private: boolean;
