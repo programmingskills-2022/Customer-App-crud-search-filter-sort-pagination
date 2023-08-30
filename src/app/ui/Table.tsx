@@ -271,9 +271,10 @@ export default function Table({
       <table className="w-full table-auto text-left">
         <thead className="bg-slate-400 text-slate-800">{tableHead}</thead>
 
-        <tbody>{tableBody}</tbody>
-
-        {tableSummery}
+        <tbody>
+          {tableBody}
+          {tableSummery}
+        </tbody>
       </table>
 
       {/* pageing */}
