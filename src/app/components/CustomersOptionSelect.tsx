@@ -146,6 +146,7 @@ export default function CustomersOptionSelect({
         <Button
           classname="w-full py-2 px-4 bg-slate-700 opacity-90 text-white rounded-xl my-6 md:w-36 hover:opacity-95"
           onClick={resetFilters}
+          disabled={false}
         >
           <span className="flex justify-center items-center">
             <p>Reset Filters</p> <FaFilter />

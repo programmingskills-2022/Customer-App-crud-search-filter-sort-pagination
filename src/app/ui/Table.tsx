@@ -222,7 +222,7 @@ export default function Table({
           onChange={handleItemsChange}
         >
           {itemsPerPageList.map((itemsNumberPerPage) => (
-            <option>{itemsNumberPerPage}</option>
+            <option key={itemsNumberPerPage}>{itemsNumberPerPage}</option>
           ))}
         </select>
         <p>
