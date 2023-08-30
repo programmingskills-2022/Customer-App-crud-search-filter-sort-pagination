@@ -1,5 +1,13 @@
-import { useEffect, useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { ChangeEvent, useEffect, useState } from "react";
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaAngleLeft,
+  FaAngleRight,
+} from "react-icons/fa";
+import Button from "./Button";
 
 type Props = {
   data: CustomerVisibleCols[];
@@ -15,6 +23,18 @@ export default function Table({
   calculatedFields,
 }: Props) {
   const [sortData, setSortData] = useState<CustomerVisibleCols[]>([...data]);
+
+  const itemsPerPageList = [5, 10, 20];
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pageNumbers = Math.ceil(sortData?.length / itemsPerPage);
+  if (currentPage > pageNumbers) setCurrentPage(pageNumbers);
+
+  const currentPageData = sortData.slice(startIndex, endIndex);
 
   const count = sortData.reduce((ac) => ac + 1, 0);
 
@@ -34,22 +54,23 @@ export default function Table({
     });
   };
 
-  function sortHandle(colNumber: number) {
+  function handleSort(colNumber: number) {
     const newData = Object.assign([], data);
     const isSorted = !colLabels[colNumber].isSorted; //true: ascending , false: descending
     const colName = colLabels[colNumber].colName;
 
-    setSortData(
-      newData.sort((a, b) =>
-        isSorted
-          ? a[colName] > b[colName]
+    colLabels[colNumber].sortable &&
+      setSortData(
+        newData.sort((a, b) =>
+          isSorted
+            ? a[colName] > b[colName]
+              ? 1
+              : -1
+            : a[colName] < b[colName]
             ? 1
             : -1
-          : a[colName] < b[colName]
-          ? 1
-          : -1
-      )
-    );
+        )
+      );
 
     colLabels[colNumber].isSorted = isSorted;
     resetColStyleAfterSort(colNumber);
@@ -67,21 +88,53 @@ export default function Table({
     );
   };
 
+  // Handle next page click
+  const handleNextPage = () => {
+    if (currentPage < pageNumbers) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Handle previous page click
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Handle last page click
+  const handleLastPage = () => {
+    if (currentPage !== pageNumbers) setCurrentPage(pageNumbers);
+  };
+
+  // Handle last page click
+  const handleFirstPage = () => {
+    if (currentPage !== 1) setCurrentPage(1);
+  };
+
+  const handleItemsChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const currentPageNumber = Number(e.target.value);
+
+    setItemsPerPage(currentPageNumber);
+  };
+
   const tableHead = (
-    <tr className="text-xs md:text-2xl">
-      {colLabels.map((colLabel, colIndex) => {
+    <tr className="text-xs md:text-xl">
+      {colLabels.map((colLabel, colNumber) => {
         return (
           <th
             className={`md:px-4 px-2 py-2 first:rounded-tl-xl last:rounded-tr-xl`}
-            key={colIndex}
+            key={colNumber}
           >
             <div
-              className={`flex gap-2 items-center hover:cursor-pointer 
+              className={`flex gap-2 items-center ${
+                colLabels[colNumber].sortable ? "hover:cursor-pointer" : ""
+              } 
               }`}
-              onClick={() => sortHandle(colIndex)}
+              onClick={() => handleSort(colNumber)}
             >
               {colLabel.label}
-              {renderColSortStyle(colIndex)}
+              {renderColSortStyle(colNumber)}
             </div>
           </th>
         );
@@ -89,7 +142,7 @@ export default function Table({
     </tr>
   );
 
-  const tableBody = sortData.map((obj: Record<string, any>, i) => {
+  const tableBody = currentPageData.map((obj: Record<string, any>, i) => {
     return (
       <tr
         key={i}
@@ -119,6 +172,7 @@ export default function Table({
           <td
             colSpan={colLabels.length}
             className={`md:px-4 px-2 py-2 rounded-bl-xl rounded-br-xl`}
+            key={count + 1}
           >
             Total Record Count = {count}
           </td>
@@ -129,6 +183,7 @@ export default function Table({
           <td
             colSpan={colLabels.length - 1}
             className={`md:px-4 px-2 py-2 rounded-bl-xl`}
+            key={1}
           >
             No Data Available!
           </td>
@@ -136,6 +191,79 @@ export default function Table({
         </tr>
       )}
     </>
+  );
+
+  const tableMobilePagination = (
+    <div className="md:text-lg flex justify-between md:hidden my-2">
+      <Button
+        disabled={currentPage > 1 ? false : true}
+        onClick={handlePrevPage}
+        classname="px-4 py-2 bg-slate-100 rounded-xl hover:bg-slate-200"
+      >
+        Prev
+      </Button>
+      <Button
+        disabled={currentPage < pageNumbers ? false : true}
+        onClick={handleNextPage}
+        classname="px-4 py-2 bg-slate-100 rounded-xl hover:bg-slate-200"
+      >
+        Next
+      </Button>
+    </div>
+  );
+
+  const tablePagination = (
+    <div className="hidden md:flex justify-between items-center my-4">
+      <div className="flex gap-2 items-center text-sm md:text-lg">
+        <p>Show</p>
+        <select
+          className="bg-slate-200 rounded-xl w-24 text-center py-2 outline-none"
+          value={itemsPerPage}
+          onChange={handleItemsChange}
+        >
+          {itemsPerPageList.map((itemsNumberPerPage) => (
+            <option>{itemsNumberPerPage}</option>
+          ))}
+        </select>
+        <p>
+          entries ( Page {currentPage} of {pageNumbers} )
+        </p>
+      </div>
+      <div className="md:flex">
+        {/* go to first page */}
+        <Button
+          disabled={currentPage === 1 ? true : false}
+          onClick={handleFirstPage}
+          classname="inline-flex items-center p-2 border rounded-bl-xl rounded-tl-xl border-gray-300 bg-white text-sm font-medium text-gray-500 hover:enabled:bg-gray-100"
+        >
+          <FaAngleDoubleLeft />
+        </Button>
+        {/* go to previous page */}
+        <Button
+          disabled={currentPage > 1 ? false : true}
+          onClick={handlePrevPage}
+          classname="inline-flex items-center px-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:enabled:bg-gray-100"
+        >
+          <FaAngleLeft />
+        </Button>
+        {/* go to next page */}
+        <Button
+          disabled={currentPage < pageNumbers ? false : true}
+          onClick={handleNextPage}
+          classname="inline-flex items-center p-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:enabled:bg-gray-100"
+        >
+          <FaAngleRight />
+        </Button>
+        {/* go to last page */}
+        <Button
+          disabled={currentPage === pageNumbers ? true : false}
+          onClick={handleLastPage}
+          classname="inline-flex items-center p-2 border rounded-br-xl rounded-tr-xl border-gray-300 bg-white text-sm font-medium text-gray-500 hover:enabled:bg-gray-100"
+        >
+          <FaAngleDoubleRight />
+        </Button>
+      </div>
+    </div>
   );
 
   return (
@@ -147,6 +275,10 @@ export default function Table({
 
         {tableSummery}
       </table>
+
+      {/* pageing */}
+      {tableMobilePagination}
+      {tablePagination}
     </div>
   );
 }
