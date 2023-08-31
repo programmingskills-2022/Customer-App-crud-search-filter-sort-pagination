@@ -1,4 +1,4 @@
-export default function getStatus(status: boolean) {
+export default function ChangeBooleanStatus(status: boolean) {
   const statusText = status ? "Active" : "Not Active";
   const activeColor = status ? "bg-green-500" : "bg-red-500";
   return (

@@ -1,4 +1,4 @@
-import CustomerList from "./components/CustomerList";
+import CustomerList from "@/components/customer/CustomerList";
 import getCustomerData from "@/lib/getCustomersData";
 
 export default async function Home() {

@@ -28,11 +28,19 @@ export default function Table({
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
+  let startIndex;
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  if (currentPage > 0) {
+    startIndex = (currentPage - 1) * itemsPerPage;
+  } else {
+    startIndex = 0;
+  }
+
   const endIndex = startIndex + itemsPerPage;
   const pageNumbers = Math.ceil(sortData?.length / itemsPerPage);
+
   if (currentPage > pageNumbers) setCurrentPage(pageNumbers);
+  if (currentPage === 0 && currentPage < pageNumbers) setCurrentPage(1);
 
   const currentPageData = sortData.slice(startIndex, endIndex);
 

@@ -1,9 +1,8 @@
 "use client";
-
 import CustomersOptionSelect from "./CustomersOptionSelect";
-import getStatus from "@/lib/customersStyles";
 import { useState } from "react";
 import Table from "../ui/Table";
+import ChangeBooleanStatus from "./CustomersStyles";
 
 type Props = {
   customers: CustomerVisibleCols[];
@@ -45,11 +44,11 @@ export default function CustomerList({ customers }: Props) {
   const calculatedFields: CalculatedField[] = [
     {
       fieldIndex: "service_contract",
-      calcFunc: (value: boolean) => getStatus(value),
+      calcFunc: (value: boolean) => ChangeBooleanStatus(value),
     },
     {
       fieldIndex: "warranty",
-      calcFunc: (value: boolean) => getStatus(value),
+      calcFunc: (value: boolean) => ChangeBooleanStatus(value),
     },
   ];
 
