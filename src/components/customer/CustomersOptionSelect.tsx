@@ -99,10 +99,11 @@ export default function CustomersOptionSelect({
     setFilterCustomers((prev) => filteredCustomers);
   }
 
-  const optionInputElements = Object.keys(options).map((key) => {
+  const optionInputElements = Object.keys(options).map((key, i) => {
     if (typeof options[key as keyof typeof options] === "string") {
       return (
         <Input
+          key={i}
           classname="outline-none bg-slate-200 text-slate-700 px-4 py-2 md:w-48 w-full rounded-xl"
           name={key}
           labelValue={key}
@@ -114,6 +115,7 @@ export default function CustomersOptionSelect({
     if (typeof options[key as keyof typeof options] === "boolean") {
       return (
         <Checkbox
+          key={i}
           name={key}
           labelValue={key}
           checked={options[key as keyof typeof options] as boolean}
