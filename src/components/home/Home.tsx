@@ -12,7 +12,7 @@ export default function Home() {
           have the ability to <b>add</b> new customers,
           <b> update</b> their information, and <b>delete</b> customer records .
         </p>
-        <p className="py-8 text-2xl">Let's start</p>
+        <p className="py-8 text-2xl">Let&apos;s start</p>
         <div className="text-slate-700 px-4 flex flex-col">
           <Link href={"/customers-list"}>- Show Customers List</Link>
           <Link href={"/customer-add"}>- Add a New Customer</Link>
