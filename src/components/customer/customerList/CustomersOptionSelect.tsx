@@ -1,8 +1,8 @@
 import { FaFilter } from "react-icons/fa";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import Input from "../ui/Input";
-import Checkbox from "../ui/Checkbox";
-import Button from "../ui/Button";
+import Checkbox from "@/components/ui/Checkbox";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 type Props = {
   customers: CustomerVisibleCols[];
@@ -12,15 +12,7 @@ export default function CustomersOptionSelect({
   customers,
   setFilterCustomers,
 }: Props) {
-  type Options = {
-    id: number;
-    serial_number: string;
-    asset_type: string;
-    customer: string;
-    service_contract: boolean;
-    warranty: boolean;
-  };
-  const [options, setOptions] = useState<Options>({
+  const [options, setOptions] = useState<Fields>({
     id: 1,
     serial_number: "",
     asset_type: "",
@@ -104,7 +96,8 @@ export default function CustomersOptionSelect({
       return (
         <Input
           key={i}
-          classname="outline-none bg-slate-200 text-slate-700 px-4 py-2 md:w-48 w-full rounded-xl"
+          labelClassname=""
+          inputClassname="outline-none bg-slate-200 text-slate-700 px-4 py-2 md:w-48 w-full rounded-xl"
           name={key}
           labelValue={key}
           value={options[key as keyof typeof options] as string}

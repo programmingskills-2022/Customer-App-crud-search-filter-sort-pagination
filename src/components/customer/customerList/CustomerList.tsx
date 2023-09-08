@@ -1,8 +1,8 @@
 "use client";
 import CustomersOptionSelect from "./CustomersOptionSelect";
 import { useState } from "react";
-import Table from "../ui/Table";
 import ChangeBooleanStatus from "./CustomersStyles";
+import Table from "@/components/ui/Table";
 
 type Props = {
   customers: CustomerVisibleCols[];

@@ -39,3 +39,12 @@ type CustomersData = {
   record: Customer[];
   metadata: CustomerMetadata;
 };
+
+type Fields = {
+  id: number;
+  serial_number: string;
+  asset_type: string;
+  customer: string;
+  service_contract: boolean;
+  warranty: boolean;
+};

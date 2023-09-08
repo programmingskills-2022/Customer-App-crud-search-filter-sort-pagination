@@ -1,6 +1,8 @@
+"use client";
+import { CustomerContext } from "@/context/CustomerContext";
 import "./globals.css";
-import type { Metadata } from "next";
 import { Roboto_Mono, Roboto } from "next/font/google";
+import { useContext } from "react";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -13,21 +15,20 @@ const roboto_mono = Roboto_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Customer App",
-  description: "This is a customer report app",
-};
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { pageTitle } = useContext(CustomerContext);
   return (
     <html
       lang="en"
       className={`${roboto.variable} ${roboto_mono.variable} box-border`}
     >
+      <head>
+        <title>SimuData App</title>
+      </head>
       <body>{children}</body>
     </html>
   );
