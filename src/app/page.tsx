@@ -11,7 +11,7 @@ export default function Page() {
     <main className="w-full font-roboto flex-col justify-center ">
       <Header
         title={metadata.description as string}
-        classname={`w-full font-roboto_mono font-bold text-slate-700 text-2xl md:text-4xl p-4 bg-slate-100`}
+        classname={`w-full flex items-center justify-between font-roboto_mono font-bold text-slate-700 text-2xl md:text-4xl p-4 bg-slate-100`}
         isHome={true}
       />
 

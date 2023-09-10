@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaAngleDoubleLeft } from "react-icons/fa";
+import Login from "../customer/login/Login";
 
 type Props = {
   title: string;
@@ -14,7 +15,10 @@ export default function Header({ title, classname, isHome }: Props) {
           <FaAngleDoubleLeft />
         </Link>
       )}
-      <h1 className={classname}>{title}</h1>
+      <div className={classname}>
+        <h1>{title}</h1>
+        {isHome && <Login />}
+      </div>
     </>
   );
 }

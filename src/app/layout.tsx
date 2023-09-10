@@ -3,6 +3,7 @@ import { CustomerContext } from "@/context/CustomerContext";
 import "./globals.css";
 import { Roboto_Mono, Roboto } from "next/font/google";
 import { useContext } from "react";
+import ReduxProvider from "@/redux/Provider";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -29,7 +30,9 @@ export default function RootLayout({
       <head>
         <title>SimuData App</title>
       </head>
-      <body>{children}</body>
+      <body>
+        <ReduxProvider>{children}</ReduxProvider>
+      </body>
     </html>
   );
 }

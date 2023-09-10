@@ -1,21 +1,23 @@
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, FormEventHandler } from "react";
 import Input from "./Input";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
+import { useRouter } from "next/navigation";
 
 type Props = {
   fields: any;
   setFields: any;
   buttonLabel: string;
+  onSubmit: FormEventHandler<HTMLFormElement> | undefined;
 };
 
-export default function Form({ fields, setFields, buttonLabel }: Props) {
-  console.log(fields);
-  for (const key in fields) console.log(key);
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-  }
+export default function Form({
+  fields,
+  setFields,
+  buttonLabel,
+  onSubmit,
+}: Props) {
+  const router = useRouter();
 
   function changeValue(e: ChangeEvent<HTMLInputElement>) {
     const inputName = e.target.name;
@@ -36,8 +38,11 @@ export default function Form({ fields, setFields, buttonLabel }: Props) {
       return (
         <Input
           key={i}
-          labelClassname=""
-          inputClassname="outline-none bg-slate-100 text-slate-700 px-4 py-2 w-full rounded-xl"
+          classname={[
+            "flex flex-col gap-2",
+            "",
+            "outline-none bg-slate-100 text-slate-700 px-4 py-2 w-full rounded-xl",
+          ]}
           name={key}
           labelValue={key}
           value={fields[key] as string}
@@ -56,21 +61,25 @@ export default function Form({ fields, setFields, buttonLabel }: Props) {
       );
   });
 
+  const handleCancel = () => {
+    router.push("/");
+  };
+
   return (
-    <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
+    <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
       {inputElements}
       <div className="flex flex-col md:flex-row md:justify-end gap-4">
         <Button
-          classname="bg-slate-800 text-white px-4 py-2 rounded-xl md:w-32"
+          classname="bg-slate-700 text-white px-4 py-2 rounded-xl md:w-32 hover:bg-slate-800"
           disabled={false}
           onClick={undefined}
         >
           {buttonLabel}
         </Button>
         <Button
-          classname="bg-slate-200 text-slate-800 border border-slate-500 px-4 py-2 rounded-xl md:w-32"
+          classname="bg-slate-200 text-slate-800 border border-slate-400 hover:border-slate-500 px-4 py-2 rounded-xl md:w-32"
           disabled={false}
-          onClick={undefined}
+          onClick={handleCancel}
         >
           Cancel
         </Button>

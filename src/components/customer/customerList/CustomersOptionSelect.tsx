@@ -71,20 +71,16 @@ export default function CustomersOptionSelect({
                 ? inputValue.toLowerCase()
                 : options[key as keyof typeof options].toString().toLowerCase()
             );
-          console.log(index, keyValue, inputName, key, match[index]);
         } else if (typeof c[key as keyof typeof c] === "boolean") {
           match[index] =
             inputName === key
               ? c[key as keyof typeof c] === inputCheckValue
               : c[key as keyof typeof c] ===
                 (options[key as keyof typeof options] as boolean);
-
-          console.log(index, keyValue, inputName, key, match[index]);
         } else match[index] = true;
         index++;
       }
 
-      console.log(c.customer, match);
       return match.every((value) => value === true);
     });
 
@@ -96,8 +92,11 @@ export default function CustomersOptionSelect({
       return (
         <Input
           key={i}
-          labelClassname=""
-          inputClassname="outline-none bg-slate-200 text-slate-700 px-4 py-2 md:w-48 w-full rounded-xl"
+          classname={[
+            "flex flex-col gap-2",
+            "",
+            "outline-none bg-slate-200 text-slate-700 px-4 py-2 md:w-48 w-full rounded-xl",
+          ]}
           name={key}
           labelValue={key}
           value={options[key as keyof typeof options] as string}

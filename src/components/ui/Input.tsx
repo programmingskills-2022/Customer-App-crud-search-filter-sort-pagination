@@ -1,24 +1,22 @@
 import { ChangeEventHandler } from "react";
 
 type Props = {
-  labelClassname: string;
-  inputClassname: string;
+  classname: string[];
   name: string;
   labelValue: string;
   value: string;
   changeValue: ChangeEventHandler<HTMLInputElement> | undefined;
 };
 export default function Input({
-  labelClassname,
-  inputClassname,
+  classname,
   name, //input name
   labelValue,
   value, //default input value
   changeValue, //change value function
 }: Props) {
   return (
-    <div className="flex flex-col gap-2">
-      <label className={labelClassname} htmlFor={labelValue}>
+    <div className={classname[0]}>
+      <label className={classname[1]} htmlFor={labelValue}>
         {labelValue}
       </label>
       <input
@@ -26,7 +24,7 @@ export default function Input({
         id={labelValue}
         value={value}
         onChange={changeValue}
-        className={inputClassname}
+        className={classname[2]}
       />
     </div>
   );

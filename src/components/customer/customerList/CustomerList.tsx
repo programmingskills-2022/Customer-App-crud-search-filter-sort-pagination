@@ -1,16 +1,21 @@
 "use client";
 import CustomersOptionSelect from "./CustomersOptionSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChangeBooleanStatus from "./CustomersStyles";
 import Table from "@/components/ui/Table";
 
 type Props = {
   customers: CustomerVisibleCols[];
+  hasOptions: boolean;
 };
-export default function CustomerList({ customers }: Props) {
+export default function CustomerList({ customers, hasOptions }: Props) {
   const [filterCustomers, setFilterCustomers] = useState<CustomerVisibleCols[]>(
-    [...customers]
+    []
   );
+
+  useEffect(() => {
+    setFilterCustomers((prev) => customers);
+  }, [customers]);
 
   const customerColLabels: colLabel[] = [
     { colName: "id", label: "Id", isSorted: false, sortable: true },
@@ -54,10 +59,12 @@ export default function CustomerList({ customers }: Props) {
 
   return (
     <>
-      <CustomersOptionSelect
-        customers={customers}
-        setFilterCustomers={setFilterCustomers}
-      />
+      {hasOptions && (
+        <CustomersOptionSelect
+          customers={customers}
+          setFilterCustomers={setFilterCustomers}
+        />
+      )}
       <Table
         data={filterCustomers}
         colLabels={customerColLabels}
