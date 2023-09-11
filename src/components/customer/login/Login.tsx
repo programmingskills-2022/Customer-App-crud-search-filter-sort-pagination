@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <div className="w-1/2 md:w-fit text-sm md:text-lg font-roboto flex flex-col items-center">
+    <div className="md:w-fit text-xs md:text-lg font-roboto flex flex-col justify-start items-center">
       {!isAuth && (
         <div className="flex flex-row  justify-center items-end gap-2 md:gap-4">
           <Input
@@ -54,7 +54,7 @@ export default function Login() {
           />
           <Button
             disabled={false}
-            classname="bg-slate-600 text-white  grid place-content-center px-4 py-2 rounded-xl hover:bg-slate-800"
+            classname="bg-slate-600 text-white  grid place-content-center px-2 py-1 md:px-4 md:py-2 rounded-xl hover:bg-slate-800"
             onClick={handleLogin}
           >
             login

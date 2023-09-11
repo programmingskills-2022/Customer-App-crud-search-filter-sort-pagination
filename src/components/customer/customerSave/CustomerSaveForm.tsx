@@ -1,5 +1,3 @@
-"use client";
-
 import Card from "@/components/ui/Card";
 import Form from "@/components/ui/Form";
 import { generateId } from "@/lib/general";
@@ -86,7 +84,6 @@ export default function CustomerSaveForm({
     resetFields(e);
   }
 
-  console.log(formFields);
   return (
     <div className="w-full px-2 md:p-4 flex flex-col justify-center items-center">
       <Card classname="w-full bg-slate-300 p-4  md:mx-auto md:p-8 mt-4 rounded-xl">

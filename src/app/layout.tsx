@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${roboto.variable} ${roboto_mono.variable} box-border`}
+      className={`w-full ${roboto.variable} ${roboto_mono.variable} box-border`}
     >
       <head>
         <title>SimuData App</title>

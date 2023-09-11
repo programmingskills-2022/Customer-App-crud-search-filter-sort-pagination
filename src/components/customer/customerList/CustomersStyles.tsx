@@ -3,7 +3,7 @@ export default function ChangeBooleanStatus(status: boolean) {
   const activeColor = status ? "bg-green-500" : "bg-red-500";
   return (
     <td>
-      <p className={`${activeColor} rounded-xl text-center w-16 md:w-24`}>
+      <p className={`${activeColor} rounded-xl text-center px-4 w-fit`}>
         {statusText}
       </p>
     </td>

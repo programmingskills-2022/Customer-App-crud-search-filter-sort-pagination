@@ -14,5 +14,5 @@
 // }
 
 export function generateId(array: any) {
-  return array.length > 1 ? array[array.length - 1].id + 1 : 1;
+  return array?.length > 1 ? array[array.length - 1].id + 1 : 1;
 }

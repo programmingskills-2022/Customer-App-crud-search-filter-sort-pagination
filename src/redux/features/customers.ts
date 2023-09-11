@@ -92,7 +92,7 @@ const customersSlice = createSlice({
 });
 
 export const selectAllCustomers = (state: RootState) =>
-  state.persistedReducer.customers.value.map(
+  state.persistedReducer.customers.value?.map(
     (customer: CustomerVisibleCols) => {
       return {
         id: customer?.id,
@@ -106,7 +106,7 @@ export const selectAllCustomers = (state: RootState) =>
   );
 
 export const selectCustomerById = (cusomerId: number, state: RootState) =>
-  state.persistedReducer.customers.value.find(
+  state.persistedReducer.customers.value?.find(
     (customer) => customer?.id === cusomerId
   );
 

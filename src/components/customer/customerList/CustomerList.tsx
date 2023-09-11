@@ -33,7 +33,7 @@ export default function CustomerList({
       label: "Id",
       isSorted: false,
       sortable: true,
-      widthcss: "w-20",
+      widthcss: "w-10 md:w-20",
     },
     {
       colName: "customer",
@@ -61,14 +61,14 @@ export default function CustomerList({
       label: "Service Contract",
       isSorted: false,
       sortable: false,
-      widthcss: "w-52",
+      widthcss: "w-20 md:w-52",
     },
     {
       colName: "warranty",
       label: "Warranty",
       isSorted: false,
       sortable: false,
-      widthcss: "w-52",
+      widthcss: "w-20 md:w-52",
     },
   ];
 
@@ -84,7 +84,7 @@ export default function CustomerList({
   ];
 
   return (
-    <>
+    <div className="w-full">
       {hasOptions && (
         <CustomersOptionSelect
           customers={customers}
@@ -102,6 +102,6 @@ export default function CustomerList({
         handleUpdate={handleUpdate}
         handleDelete={handleDelete}
       />
-    </>
+    </div>
   );
 }

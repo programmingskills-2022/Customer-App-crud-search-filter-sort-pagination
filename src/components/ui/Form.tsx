@@ -22,7 +22,6 @@ export default function Form({
   onSubmit,
 }: Props) {
   const router = useRouter();
-  console.log(fields);
 
   function changeValue(e: ChangeEvent<HTMLInputElement>) {
     const inputName = e.target.name;

@@ -32,7 +32,7 @@ export default function Table({
   handleUpdate,
   handleDelete,
 }: Props) {
-  const [sortData, setSortData] = useState<CustomerVisibleCols[]>([...data]);
+  const [sortData, setSortData] = useState<CustomerVisibleCols[]>([]);
 
   const itemsPerPageList = [5, 10, 20];
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -138,28 +138,35 @@ export default function Table({
 
   //table head columns
   const tableHead = (
-    <tr className="text-xs md:text-xl">
-      {colLabels.map((colLabel, colNumber) => {
-        return (
-          <th
-            className={`md:px-4 px-2 py-2 first:rounded-tl-xl ${
-              colLabel.widthcss
-            } ${!(hasDeleteButton || hasUpdateButton) && "last:rounded-tr-xl"}`}
-            key={colNumber}
-          >
-            <div
-              className={`flex gap-2 items-center ${
-                colLabels[colNumber].sortable ? "hover:cursor-pointer" : ""
-              } 
+    <tr className="md:text-xl">
+      <div className="hidden md:contents">
+        {colLabels.map((colLabel, colNumber) => {
+          return (
+            <th
+              className={`md:px-4 px-2 py-2 first:rounded-tl-xl ${
+                colLabel.widthcss
+              } ${
+                !(hasDeleteButton || hasUpdateButton) && "last:rounded-tr-xl"
               }`}
-              onClick={() => handleSort(colNumber)}
+              key={colNumber}
             >
-              {colLabel.label}
-              {renderColSortStyle(colNumber)}
-            </div>
-          </th>
-        );
-      })}
+              <div
+                className={`flex gap-2 items-center ${
+                  colLabels[colNumber].sortable ? "hover:cursor-pointer" : ""
+                } 
+              }`}
+                onClick={() => handleSort(colNumber)}
+              >
+                {colLabel.label}
+                {renderColSortStyle(colNumber)}
+              </div>
+            </th>
+          );
+        })}
+      </div>
+      <th className="md:hidden md:px-4 px-2 py-2 rounded-tl-xl">
+        informations
+      </th>
       {(hasDeleteButton || hasUpdateButton) && (
         <th className="last:rounded-tr-xl text-center">Operations</th>
       )}
@@ -169,44 +176,92 @@ export default function Table({
   //include table rows's data
   const tableBody = currentPageData.map((obj: Record<string, any>, i) => {
     return (
-      <tr
-        key={i}
-        className="text-xs md:text-lg bg-slate-100 border border-slate-300 odd:bg-slate-100 even:bg-slate-200"
-      >
-        {Object.keys(obj).map((key) => {
-          const isExists = findCalculatedField(key);
+      <>
+        <tr
+          key={i}
+          className="md:hidden w-full bg-slate-100 border border-slate-300 odd:bg-slate-100 even:bg-slate-200"
+        >
+          <td className="md:px-4 px-2 py-2">
+            {Object.keys(obj).map((key, i) => {
+              const isExists = findCalculatedField(key);
 
-          if (isExists === undefined) {
-            return (
-              <td className="md:px-4 px-2 py-2" key={key}>
-                {obj[key]}
-              </td>
-            );
-          } else {
-            return isExists.calcFunc(obj[key]);
-          }
-        })}
-        {(hasDeleteButton || hasUpdateButton) && (
-          <td className="bg-slate-400 w-fit">
-            <div className="flex flex-col py-2 md:flex-row gap-2 md:gap-4 items-center justify-center w-full">
-              <Button
-                disabled={false}
-                classname="bg-blue-600 text-white px-2 md:px-4 rounded-xl hover:bg-blue-700"
-                onClick={() => handleUpdate(obj[keyField])}
-              >
-                {hasUpdateButton && "Update"}
-              </Button>
-              <Button
-                disabled={false}
-                classname="bg-red-600/80 text-white px-2 md:px-4 rounded-xl hover:bg-red-700"
-                onClick={() => handleDelete(obj[keyField])}
-              >
-                {hasDeleteButton && "delete"}
-              </Button>
-            </div>
+              if (isExists === undefined) {
+                return (
+                  <div key={i}>
+                    {key}: {obj[key]}
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={i} className="flex">
+                    {key}: {isExists.calcFunc(obj[key])}
+                  </div>
+                );
+              }
+            })}
           </td>
-        )}
-      </tr>
+          {(hasDeleteButton || hasUpdateButton) && (
+            <td className="bg-slate-200 w-fit">
+              <div className="flex py-2 gap-2 md:gap-4 items-center justify-center w-full">
+                <Button
+                  disabled={false}
+                  classname="bg-blue-600 text-white px-2 md:px-4 rounded-xl hover:bg-blue-700"
+                  onClick={() => handleUpdate(obj[keyField])}
+                >
+                  {hasUpdateButton && "Update"}
+                </Button>
+                <Button
+                  disabled={false}
+                  classname="bg-red-600/80 text-white px-2 md:px-4 rounded-xl hover:bg-red-700"
+                  onClick={() => handleDelete(obj[keyField])}
+                >
+                  {hasDeleteButton && "delete"}
+                </Button>
+              </div>
+            </td>
+          )}
+        </tr>
+        <div className="w-full hidden md:contents">
+          <tr
+            key={i}
+            className="w-full text-xs md:text-lg bg-slate-100 border border-slate-300 odd:bg-slate-100 even:bg-slate-200"
+          >
+            {Object.keys(obj).map((key) => {
+              const isExists = findCalculatedField(key);
+
+              if (isExists === undefined) {
+                return (
+                  <td className="md:px-4 px-2 py-2" key={key}>
+                    {obj[key]}
+                  </td>
+                );
+              } else {
+                return isExists.calcFunc(obj[key]);
+              }
+            })}
+            {(hasDeleteButton || hasUpdateButton) && (
+              <td className="bg-slate-400 w-fit">
+                <div className="flex py-2 gap-2 md:gap-4 items-center justify-center w-full">
+                  <Button
+                    disabled={false}
+                    classname="bg-blue-600 text-white px-2 md:px-4 rounded-xl hover:bg-blue-700"
+                    onClick={() => handleUpdate(obj[keyField])}
+                  >
+                    {hasUpdateButton && "Update"}
+                  </Button>
+                  <Button
+                    disabled={false}
+                    classname="bg-red-600/80 text-white px-2 md:px-4 rounded-xl hover:bg-red-700"
+                    onClick={() => handleDelete(obj[keyField])}
+                  >
+                    {hasDeleteButton && "delete"}
+                  </Button>
+                </div>
+              </td>
+            )}
+          </tr>
+        </div>
+      </>
     );
   });
 
@@ -322,7 +377,7 @@ export default function Table({
   );
 
   return (
-    <div className="px-2 md:px-4 pb-8">
+    <div className="w-full px-2 md:px-4 pb-8">
       <table className="w-full table-auto text-left">
         <thead className="bg-slate-400 text-slate-800">{tableHead}</thead>
 
