@@ -164,7 +164,11 @@ export default function Table({
           );
         })}
       </div>
-      <th className="md:hidden md:px-4 px-2 py-2 rounded-tl-xl">
+      <th
+        className={`md:hidden md:px-4 px-2 py-2 rounded-tl-xl ${
+          !(hasDeleteButton || hasUpdateButton) && "last:rounded-tr-xl"
+        }`}
+      >
         informations
       </th>
       {(hasDeleteButton || hasUpdateButton) && (
