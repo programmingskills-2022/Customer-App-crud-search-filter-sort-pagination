@@ -1,5 +1,4 @@
 "use client";
-import { CustomerContext } from "@/context/CustomerContext";
 import "./globals.css";
 import { Roboto_Mono, Roboto } from "next/font/google";
 import { useContext } from "react";
@@ -21,7 +20,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { pageTitle } = useContext(CustomerContext);
   return (
     <html
       lang="en"
