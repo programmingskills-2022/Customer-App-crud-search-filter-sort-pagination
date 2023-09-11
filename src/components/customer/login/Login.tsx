@@ -43,8 +43,8 @@ export default function Login() {
         <div className="flex flex-row  justify-center items-end gap-2 md:gap-4">
           <Input
             classname={[
-              "flex flex-col md:flex-row items-center md:gap-2",
-              "w-32 md:text-right",
+              "flex items-center gap-2",
+              "text-right",
               "outline-none bg-slate-200 text-slate-700 px-4 py-2 md:w-48 w-full rounded-xl",
             ]}
             name={name}
