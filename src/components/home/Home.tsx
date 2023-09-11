@@ -1,11 +1,15 @@
 "use client";
-import { useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/hook";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-  const username = useAppSelector((state) => state.auth.value.username);
-  const isAuth = useAppSelector((state) => state.auth.value.isAuth);
+  const username = useAppSelector(
+    (state) => state.persistedReducer.auth.value.username
+  );
+  const isAuth = useAppSelector(
+    (state) => state.persistedReducer.auth.value.isAuth
+  );
 
   return (
     <div className="text-xl py-12 px-4 flex flex-col-reverse items-center md:flex-row gap-4 ">

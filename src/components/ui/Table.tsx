@@ -11,16 +11,26 @@ import Button from "./Button";
 
 type Props = {
   data: CustomerVisibleCols[];
+  keyField: string;
   colLabels: colLabel[];
   summeryVisible: boolean;
   calculatedFields: CalculatedField[];
+  hasUpdateButton: boolean;
+  hasDeleteButton: boolean;
+  handleUpdate: (id: number) => void;
+  handleDelete: (id: number) => void;
 };
 
 export default function Table({
   data,
+  keyField,
   colLabels,
   summeryVisible,
   calculatedFields,
+  hasUpdateButton,
+  hasDeleteButton,
+  handleUpdate,
+  handleDelete,
 }: Props) {
   const [sortData, setSortData] = useState<CustomerVisibleCols[]>([...data]);
 
@@ -126,12 +136,15 @@ export default function Table({
     setItemsPerPage(currentPageNumber);
   };
 
+  //table head columns
   const tableHead = (
     <tr className="text-xs md:text-xl">
       {colLabels.map((colLabel, colNumber) => {
         return (
           <th
-            className={`md:px-4 px-2 py-2 first:rounded-tl-xl last:rounded-tr-xl`}
+            className={`md:px-4 px-2 py-2 first:rounded-tl-xl ${
+              colLabel.widthcss
+            } ${!(hasDeleteButton || hasUpdateButton) && "last:rounded-tr-xl"}`}
             key={colNumber}
           >
             <div
@@ -147,9 +160,13 @@ export default function Table({
           </th>
         );
       })}
+      {(hasDeleteButton || hasUpdateButton) && (
+        <th className="last:rounded-tr-xl text-center">Operations</th>
+      )}
     </tr>
   );
 
+  //include table rows's data
   const tableBody = currentPageData.map((obj: Record<string, any>, i) => {
     return (
       <tr
@@ -169,16 +186,42 @@ export default function Table({
             return isExists.calcFunc(obj[key]);
           }
         })}
+        {(hasDeleteButton || hasUpdateButton) && (
+          <td className="bg-slate-400 w-fit">
+            <div className="flex flex-col py-2 md:flex-row gap-2 md:gap-4 items-center justify-center w-full">
+              <Button
+                disabled={false}
+                classname="bg-blue-600 text-white px-2 md:px-4 rounded-xl hover:bg-blue-700"
+                onClick={() => handleUpdate(obj[keyField])}
+              >
+                {hasUpdateButton && "Update"}
+              </Button>
+              <Button
+                disabled={false}
+                classname="bg-red-600/80 text-white px-2 md:px-4 rounded-xl hover:bg-red-700"
+                onClick={() => handleDelete(obj[keyField])}
+              >
+                {hasDeleteButton && "delete"}
+              </Button>
+            </div>
+          </td>
+        )}
       </tr>
     );
   });
 
+  //last line of table
   const tableSummery = (
     <>
       {summeryVisible && count > 0 && (
         <tr className="text-sm font-bold md:text-xl bg-slate-400">
           <td
-            colSpan={colLabels.length}
+            //1 added for operation column
+            colSpan={
+              hasDeleteButton || hasUpdateButton
+                ? colLabels.length + 1
+                : colLabels.length
+            }
             className={`md:px-4 px-2 py-2 rounded-bl-xl rounded-br-xl`}
             key={count + 1}
           >
@@ -189,7 +232,11 @@ export default function Table({
       {summeryVisible && count === 0 && (
         <tr className="text-xl bg-slate-100">
           <td
-            colSpan={colLabels.length - 1}
+            colSpan={
+              hasDeleteButton || hasUpdateButton
+                ? colLabels.length
+                : colLabels.length - 1
+            }
             className={`md:px-4 px-2 py-2 rounded-bl-xl`}
             key={1}
           >

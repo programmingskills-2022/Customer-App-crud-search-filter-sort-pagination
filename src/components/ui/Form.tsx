@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEventHandler } from "react";
+import { ChangeEvent, FormEventHandler, FormEvent } from "react";
 import Input from "./Input";
 import Checkbox from "./Checkbox";
 import Button from "./Button";
@@ -8,6 +8,8 @@ type Props = {
   fields: any;
   setFields: any;
   buttonLabel: string;
+  isUpdate: boolean;
+  resetFields: (e: FormEvent<Element>) => void;
   onSubmit: FormEventHandler<HTMLFormElement> | undefined;
 };
 
@@ -15,9 +17,12 @@ export default function Form({
   fields,
   setFields,
   buttonLabel,
+  isUpdate,
+  resetFields,
   onSubmit,
 }: Props) {
   const router = useRouter();
+  console.log(fields);
 
   function changeValue(e: ChangeEvent<HTMLInputElement>) {
     const inputName = e.target.name;
@@ -41,7 +46,7 @@ export default function Form({
           classname={[
             "flex flex-col gap-2",
             "",
-            "outline-none bg-slate-100 text-slate-700 px-4 py-2 w-full rounded-xl",
+            "outline-none bg-slate-50 text-slate-700 px-4 py-2 w-full rounded-xl",
           ]}
           name={key}
           labelValue={key}
@@ -61,10 +66,6 @@ export default function Form({
       );
   });
 
-  const handleCancel = () => {
-    router.push("/");
-  };
-
   return (
     <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
       {inputElements}
@@ -79,7 +80,7 @@ export default function Form({
         <Button
           classname="bg-slate-200 text-slate-800 border border-slate-400 hover:border-slate-500 px-4 py-2 rounded-xl md:w-32"
           disabled={false}
-          onClick={handleCancel}
+          onClick={resetFields}
         >
           Cancel
         </Button>

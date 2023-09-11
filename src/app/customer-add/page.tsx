@@ -1,13 +1,13 @@
-import CustomerAdd from "@/components/customer/customerAdd/CustomerAdd";
+import CustomerSave from "@/components/customer/customerSave/CustomerSave";
 import Header from "@/components/general/Header";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Add customer",
-  description: "Add a new customer",
+  description: "Add New Customer",
 };
 
-export default function CustomerAddPage() {
+export default function CustomerSavePage() {
   return (
     <>
       <div
@@ -19,7 +19,7 @@ export default function CustomerAddPage() {
           isHome={false}
         />
       </div>
-      <CustomerAdd />
+      <CustomerSave />
     </>
   );
 }

@@ -7,8 +7,19 @@ import Table from "@/components/ui/Table";
 type Props = {
   customers: CustomerVisibleCols[];
   hasOptions: boolean;
+  hasDeleteButton: boolean;
+  hasUpdateButton: boolean;
+  handleUpdate: (id: number) => void;
+  handleDelete: (id: number) => void;
 };
-export default function CustomerList({ customers, hasOptions }: Props) {
+export default function CustomerList({
+  customers,
+  hasOptions,
+  hasDeleteButton,
+  hasUpdateButton,
+  handleUpdate,
+  handleDelete,
+}: Props) {
   const [filterCustomers, setFilterCustomers] = useState<CustomerVisibleCols[]>(
     []
   );
@@ -18,31 +29,47 @@ export default function CustomerList({ customers, hasOptions }: Props) {
   }, [customers]);
 
   const customerColLabels: colLabel[] = [
-    { colName: "id", label: "Id", isSorted: false, sortable: true },
-    { colName: "customer", label: "Customer", isSorted: false, sortable: true },
+    {
+      colName: "id",
+      label: "Id",
+      isSorted: false,
+      sortable: true,
+      widthcss: "w-20",
+    },
+    {
+      colName: "customer",
+      label: "Customer",
+      isSorted: false,
+      sortable: true,
+      widthcss: "w-72",
+    },
     {
       colName: "assetType",
       label: "Asset Type",
       isSorted: false,
       sortable: false,
+      widthcss: "w-60",
     },
     {
       colName: "serial_number",
       label: "Serial Number",
       isSorted: false,
       sortable: false,
+      widthcss: "w-80",
     },
     {
       colName: "service-contract",
       label: "Service Contract",
       isSorted: false,
       sortable: false,
+      widthcss: "w-52",
     },
     {
       colName: "warranty",
       label: "Warranty",
       isSorted: false,
       sortable: false,
+      widthcss: "w-52",
     },
   ];
 
@@ -67,9 +94,14 @@ export default function CustomerList({ customers, hasOptions }: Props) {
       )}
       <Table
         data={filterCustomers}
+        keyField={"id"}
         colLabels={customerColLabels}
         summeryVisible={true}
         calculatedFields={calculatedFields}
+        hasDeleteButton={hasDeleteButton}
+        hasUpdateButton={hasUpdateButton}
+        handleUpdate={handleUpdate}
+        handleDelete={handleDelete}
       />
     </>
   );

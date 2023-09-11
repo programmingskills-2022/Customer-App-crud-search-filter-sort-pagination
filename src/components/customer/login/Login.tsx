@@ -1,19 +1,22 @@
 "use client";
 
 import Input from "@/components/ui/Input";
-import { useState, ChangeEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useState, ChangeEvent, use } from "react";
 import { login, logout } from "@/redux/features/auth";
 import Button from "@/components/ui/Button";
-import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 
 export default function Login() {
   const name: string = "username";
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
-  const currentUsername = useAppSelector((state) => state.auth.value.username);
-  const isAuth = useAppSelector((state) => state.auth.value.isAuth);
+  const dispatch = useAppDispatch();
+  const currentUsername = useAppSelector(
+    (state) => state.persistedReducer.auth.value.username
+  );
+  const isAuth = useAppSelector(
+    (state) => state.persistedReducer.auth.value.isAuth
+  );
 
   const handleUsername = (e: ChangeEvent<HTMLInputElement>) => {
     setUsername((prev) => e.target.value);

@@ -1,18 +1,17 @@
 "use client";
 
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CustomerList from "./CustomerList";
 import Header from "@/components/general/Header";
-import { useDispatch } from "react-redux";
 import { fetchCustomers, selectAllCustomers } from "@/redux/features/customers";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 
 type Props = {
   title: string;
 };
 
 export default function CustomerListDisplay({ title }: Props) {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const customers = useAppSelector(selectAllCustomers);
 
   useEffect(() => {
@@ -30,7 +29,14 @@ export default function CustomerListDisplay({ title }: Props) {
           isHome={false}
         />
       </div>
-      <CustomerList customers={customers} hasOptions={true} />
+      <CustomerList
+        customers={customers}
+        hasOptions={true}
+        hasDeleteButton={false}
+        hasUpdateButton={false}
+        handleUpdate={(id: number) => {}}
+        handleDelete={(id: number) => {}}
+      />
     </>
   );
 }

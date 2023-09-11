@@ -12,7 +12,7 @@ export default function CustomersOptionSelect({
   customers,
   setFilterCustomers,
 }: Props) {
-  const [options, setOptions] = useState<Fields>({
+  const [options, setOptions] = useState<CustomerVisibleCols>({
     id: 1,
     serial_number: "",
     asset_type: "",
