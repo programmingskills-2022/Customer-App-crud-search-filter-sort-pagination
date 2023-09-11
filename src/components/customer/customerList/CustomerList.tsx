@@ -1,4 +1,3 @@
-"use client";
 import CustomersOptionSelect from "./CustomersOptionSelect";
 import { useEffect, useState } from "react";
 import ChangeBooleanStatus from "./CustomersStyles";
