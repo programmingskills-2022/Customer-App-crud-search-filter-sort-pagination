@@ -1,21 +1,26 @@
 "use client";
 
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import CustomerList from "./CustomerList";
 import Header from "@/components/general/Header";
 import { fetchCustomers, selectAllCustomers } from "@/redux/features/customers";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { TableContext } from "@/context/TableContext";
 
 type Props = {
   title: string;
 };
 
 export default function CustomerListDisplay({ title }: Props) {
+  const { handleHasUpdateButton, handleHasDeleteButton } =
+    useContext(TableContext);
   const dispatch = useAppDispatch();
   const customers = useAppSelector(selectAllCustomers);
 
   useEffect(() => {
     dispatch(fetchCustomers());
+    handleHasDeleteButton(false);
+    handleHasUpdateButton(false);
   }, []);
 
   return (
@@ -32,10 +37,9 @@ export default function CustomerListDisplay({ title }: Props) {
       <CustomerList
         customers={customers}
         hasOptions={true}
-        hasDeleteButton={false}
-        hasUpdateButton={false}
         handleUpdate={(id: number) => {}}
         handleDelete={(id: number) => {}}
+        handleDeleteConfirm={(id) => {}}
       />
     </>
   );

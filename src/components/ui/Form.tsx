@@ -8,7 +8,6 @@ type Props = {
   fields: any;
   setFields: any;
   buttonLabel: string;
-  isUpdate: boolean;
   resetFields: (e: FormEvent<Element>) => void;
   onSubmit: FormEventHandler<HTMLFormElement> | undefined;
 };
@@ -17,7 +16,6 @@ export default function Form({
   fields,
   setFields,
   buttonLabel,
-  isUpdate,
   resetFields,
   onSubmit,
 }: Props) {

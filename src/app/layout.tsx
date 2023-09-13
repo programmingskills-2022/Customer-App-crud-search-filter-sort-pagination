@@ -1,8 +1,8 @@
 "use client";
 import "./globals.css";
 import { Roboto_Mono, Roboto } from "next/font/google";
-import { useContext } from "react";
 import ReduxProvider from "@/redux/Provider";
+import ContextProvider from "@/context/TableContext";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -29,7 +29,10 @@ export default function RootLayout({
         <title>SimuData App</title>
       </head>
       <body>
-        <ReduxProvider>{children}</ReduxProvider>
+        <ContextProvider>
+          <ReduxProvider>{children}</ReduxProvider>
+        </ContextProvider>
+        <div id="overlay"></div>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import {
   FaChevronDown,
   FaChevronUp,
@@ -8,6 +8,9 @@ import {
   FaAngleRight,
 } from "react-icons/fa";
 import Button from "./Button";
+import Modal from "../general/Modal";
+import { TableContext } from "@/context/TableContext";
+import ConfirmDelete from "./ConfirmDelete";
 
 type Props = {
   data: CustomerVisibleCols[];
@@ -15,10 +18,12 @@ type Props = {
   colLabels: colLabel[];
   summeryVisible: boolean;
   calculatedFields: CalculatedField[];
-  hasUpdateButton: boolean;
-  hasDeleteButton: boolean;
+  // hasUpdateButton: boolean;
+  // hasDeleteButton: boolean;
+  // isConfirmdelete: boolean;
   handleUpdate: (id: number) => void;
   handleDelete: (id: number) => void;
+  handleDeleteConfirm: (id: number) => void;
 };
 
 export default function Table({
@@ -27,11 +32,20 @@ export default function Table({
   colLabels,
   summeryVisible,
   calculatedFields,
-  hasUpdateButton,
-  hasDeleteButton,
+  // hasUpdateButton,
+  // hasDeleteButton,
+  // isConfirmdelete,
   handleUpdate,
   handleDelete,
+  handleDeleteConfirm,
 }: Props) {
+  const {
+    hasUpdateButton,
+    hasDeleteButton,
+    crudStatus,
+    handleClose,
+    activeRecord,
+  } = useContext(TableContext);
   const [sortData, setSortData] = useState<CustomerVisibleCols[]>([]);
 
   const itemsPerPageList = [5, 10, 20];
@@ -52,9 +66,9 @@ export default function Table({
   if (currentPage > pageNumbers) setCurrentPage(pageNumbers);
   if (currentPage === 0 && currentPage < pageNumbers) setCurrentPage(1);
 
-  const currentPageData = sortData.slice(startIndex, endIndex);
+  const currentPageData = sortData?.slice(startIndex, endIndex);
 
-  const count = sortData.reduce((ac) => ac + 1, 0);
+  const count = sortData?.reduce((ac) => ac + 1, 0);
 
   useEffect(() => {
     setSortData(data);
@@ -178,7 +192,7 @@ export default function Table({
   );
 
   //include table rows's data
-  const tableBody = currentPageData.map((obj: Record<string, any>, i) => {
+  const tableBody = currentPageData?.map((obj: Record<string, any>, i) => {
     return (
       <>
         <tr
@@ -217,7 +231,7 @@ export default function Table({
                 <Button
                   disabled={false}
                   classname="bg-red-600/80 text-white px-2 md:px-4 rounded-xl hover:bg-red-700"
-                  onClick={() => handleDelete(obj[keyField])}
+                  onClick={() => handleDeleteConfirm(obj[keyField])}
                 >
                   {hasDeleteButton && "delete"}
                 </Button>
@@ -256,7 +270,7 @@ export default function Table({
                   <Button
                     disabled={false}
                     classname="bg-red-600/80 text-white px-2 md:px-4 rounded-xl hover:bg-red-700"
-                    onClick={() => handleDelete(obj[keyField])}
+                    onClick={() => handleDeleteConfirm(obj[keyField])}
                   >
                     {hasDeleteButton && "delete"}
                   </Button>
@@ -394,6 +408,16 @@ export default function Table({
       {/* pageing */}
       {tableMobilePagination}
       {tablePagination}
+      {crudStatus.isDelete && (
+        <Modal onClick={handleClose}>
+          <ConfirmDelete
+            onCancelClick={handleClose}
+            onDeleteClick={() => {
+              handleDelete(activeRecord);
+            }}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

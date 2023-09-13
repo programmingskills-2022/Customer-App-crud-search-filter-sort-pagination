@@ -6,18 +6,16 @@ import Table from "@/components/ui/Table";
 type Props = {
   customers: CustomerVisibleCols[];
   hasOptions: boolean;
-  hasDeleteButton: boolean;
-  hasUpdateButton: boolean;
   handleUpdate: (id: number) => void;
   handleDelete: (id: number) => void;
+  handleDeleteConfirm: (id: number) => void;
 };
 export default function CustomerList({
   customers,
   hasOptions,
-  hasDeleteButton,
-  hasUpdateButton,
   handleUpdate,
   handleDelete,
+  handleDeleteConfirm,
 }: Props) {
   const [filterCustomers, setFilterCustomers] = useState<CustomerVisibleCols[]>(
     []
@@ -97,10 +95,9 @@ export default function CustomerList({
         colLabels={customerColLabels}
         summeryVisible={true}
         calculatedFields={calculatedFields}
-        hasDeleteButton={hasDeleteButton}
-        hasUpdateButton={hasUpdateButton}
         handleUpdate={handleUpdate}
         handleDelete={handleDelete}
+        handleDeleteConfirm={handleDeleteConfirm}
       />
     </div>
   );

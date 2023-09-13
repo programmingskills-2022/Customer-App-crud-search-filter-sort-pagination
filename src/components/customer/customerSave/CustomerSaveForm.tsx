@@ -1,33 +1,21 @@
 import Card from "@/components/ui/Card";
 import Form from "@/components/ui/Form";
+import { TableContext } from "@/context/TableContext";
 import { generateId } from "@/lib/general";
 import {
   addCustomerData,
   updateCustomerData,
-  deleteCustomerData,
+  selectCustomerById,
 } from "@/redux/features/customers";
-import { useAppDispatch } from "@/redux/hook";
-import {
-  useState,
-  useEffect,
-  FormEvent,
-  SetStateAction,
-  Dispatch,
-} from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useState, useEffect, FormEvent, useContext } from "react";
 
 type Props = {
   customers: CustomerVisibleCols[];
-  isUpdate: boolean;
-  setIsUpdate: Dispatch<SetStateAction<boolean>>;
-  updateCustomer: CustomerVisibleCols;
 };
 
-export default function CustomerSaveForm({
-  customers,
-  isUpdate,
-  setIsUpdate,
-  updateCustomer,
-}: Props) {
+export default function CustomerSaveForm({ customers }: Props) {
+  const { crudStatus, handleCrudStatus } = useContext(TableContext);
   const [error, setError] = useState("");
   const [formFields, setFormFields] = useState<CustomerVisibleCols>({
     id: 0,
@@ -37,11 +25,31 @@ export default function CustomerSaveForm({
     service_contract: false,
     warranty: false,
   });
+
+  const currentCustomerId = useAppSelector(
+    (state) => state.persistedReducer.customers.currentCustomerId
+  );
+
+  const updateCustomer = useAppSelector((state) =>
+    selectCustomerById(currentCustomerId, state)
+  ) as CustomerVisibleCols;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isUpdate) setFormFields({ ...formFields, id: generateId(customers) });
-    else
+    if (crudStatus.isDelete)
+      setFormFields((prev) => {
+        return {
+          id: 0,
+          serial_number: "",
+          asset_type: "",
+          customer: "",
+          service_contract: false,
+          warranty: false,
+        };
+      });
+    else if (crudStatus.isAdd)
+      setFormFields({ ...formFields, id: generateId(customers) });
+    else if (crudStatus.isUpdate) {
       setFormFields({
         id: updateCustomer.id,
         serial_number: updateCustomer.serial_number,
@@ -50,7 +58,8 @@ export default function CustomerSaveForm({
         service_contract: updateCustomer.service_contract,
         warranty: updateCustomer.warranty,
       });
-  }, [customers]);
+    }
+  }, [customers, crudStatus]);
   //reset all form fields
   function resetFields(e: FormEvent): void {
     e.preventDefault();
@@ -64,7 +73,7 @@ export default function CustomerSaveForm({
         warranty: false,
       };
     });
-    setIsUpdate((prev) => false);
+    handleCrudStatus({ isAdd: false, isDelete: false, isUpdate: false });
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -79,8 +88,8 @@ export default function CustomerSaveForm({
     } else {
       setError("");
     }
-    if (isUpdate) dispatch(updateCustomerData(formFields));
-    else dispatch(addCustomerData(formFields));
+    if (crudStatus.isUpdate) dispatch(updateCustomerData(formFields));
+    else if (crudStatus.isAdd) dispatch(addCustomerData(formFields));
     resetFields(e);
   }
 
@@ -91,8 +100,7 @@ export default function CustomerSaveForm({
         <Form
           fields={formFields}
           setFields={setFormFields}
-          buttonLabel={isUpdate ? "Save" : "Add"}
-          isUpdate={isUpdate}
+          buttonLabel={crudStatus.isUpdate ? "Save" : "Add"}
           resetFields={resetFields}
           onSubmit={handleSubmit}
         />
